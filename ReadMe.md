@@ -100,9 +100,9 @@ python launch.py --config configs/mushroom_config.yaml \
 ```
 
 ## TODO
-[] More stable results
-[] DTU datasets.
-[] Supervised with more prior information.
+- [ ] More stable results
+- [ ] DTU datasets.
+- [ ] Supervised with more prior information.
 
 ## Acknowledgements
 
