@@ -1,0 +1,3 @@
+[submodule "pointrix"]
+	path = pointrix
+	url = https://github.com/pointrix-project/pointrix.git
