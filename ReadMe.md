@@ -1,5 +1,10 @@
 # Flow Distillation Sampling: Regularizing 3D Gaussians with Pre-trained Matching Priors
-### <p align="center">[🌐Project Page](https://nju-3dv.github.io/projects/fds/) | [🖨️ArXiv](https://nju-3dv.github.io/projects/fds/fds.pdf) | [📰Paper](https://nju-3dv.github.io/projects/fds/fds.pdf)</p>
+<div align="center">
+  <a href=https://nju-3dv.github.io/projects/fds/ target="_blank"><img src=https://img.shields.io/badge/Project%20Page-333399.svg?logo=googlehome height=22px></a>
+  <a href=https://nju-3dv.github.io/projects/fds/fds.pdf target="_blank"><img src=https://img.shields.io/badge/Paper-b5212f.svg?logo=paperswithcode height=22px></a>
+  <a href=https://arxiv.org/abs/2502.07615 target="_blank"><img src=https://img.shields.io/badge/Arxiv-b5212f.svg?logo=arxiv height=22px></a>
+</div>
+
 
 
 <p align="center">
@@ -28,12 +33,88 @@
               </span>
 </p>
 
-This is official implement of paper *Flow Distillation Sampling: Regularizing 3D Gaussians with Pre-trained Matching Priors*.
-
- Code coming soon
+This is official implement of our ICLR 2025 paper: **Flow Distillation Sampling: Regularizing 3D Gaussians with Pre-trained Matching Priors**.
 
 
- ## Citation
+## 📝 Abstract
+
+3D Gaussian Splatting (3DGS) has achieved excellent rendering quality with fast training and rendering speed. However, its optimization process lacks explicit geometric constraints, leading to suboptimal geometric reconstruction in regions with sparse or no observational input views. In this work, we try to mitigate the issue by incorporating a pre-trained matching prior to the 3DGS optimization process. We introduce Flow Distillation Sampling (FDS), a technique that leverages pre-trained geometric knowledge to bolster the accuracy of the Gaussian radiance field. Our method employs a strategic sampling technique to target unobserved views adjacent to the input views, utilizing the optical flow calculated from the matching model (Prior Flow) to guide the flow analytically calculated from the 3DGS geometry (Radiance Flow). Comprehensive experiments in depth rendering, mesh reconstruction, and novel view synthesis showcase the significant advantages of FDS over state-of-the-art methods. Additionally, our interpretive experiments and analysis aim to shed light on the effects of FDS on geometric accuracy and rendering quality, potentially providing readers with insights into its performance.
+
+## 🚀 Getting Started
+
+### Data preparation
+1. Download our colmap points for 2DGS initilization: [mushroom_colmap](https://drive.google.com/drive/folders/1ExkHpQ4wkCDPMXvAn5uuiApvSUII1gVi?usp=drive_link).
+2. Download mushroom dataset: [mushroom_website](https://github.com/TUTvision/MuSHRoom).
+3. Put our colmap points into mushroom dataset:
+
+```
+FDS
+├── Mushroom
+    ├── activity
+    |   ├── iphone
+    |   ├── ├── long_capture
+    |   ├── ├── ├── put colmap points here
+
+    ├── classroom
+    |   ├── iphone
+    |   ├── ├── long_capture
+    |   ├── ├── ├── put colmap points here
+
+...
+```
+
+### Installation
+
+#### Clone FDS
+```bash
+git clone https://github.com/NJU-3DV/FDS.git --recursive
+```
+
+#### Install Pointrix
+```
+cd pointrix
+git submodule update --init --recursive
+```
+Please refer to https://github.com/pointrix-project/Pointrix for the install instruction.
+
+### Running
+
+#### Mushroom dataset
+
+```bash
+python launch.py --config configs/mushroom_config.yaml \
+                  trainer.datapipeline.dataset.data_path=[your_data_path] \
+                  trainer.output_path=[your_log_path] \
+                  trainer.exporter.exporter_b.extra_cfg.gt_mesh_path=[your_mesh_path]  \
+                  trainer.gui.viewer_port=8005
+```
+
+for example, to run vr room scene in mushroom dataset:
+
+```bash
+python launch.py --config configs/mushroom_config.yaml \
+                        trainer.datapipeline.dataset.data_path=/NASdata/clz/data/mushroom/vr_room/iphone \
+                        trainer.output_path=/NASdata/clz/log/fds_paper_final_v2/2dgs/fds_test/vr_room \
+                        trainer.exporter.exporter_b.extra_cfg.gt_mesh_path=/NASdata/clz/data/mushroom/vr_room \
+                        trainer.gui.viewer_port=8005
+```
+
+## TODO
+[] More stable results
+[] DTU datasets.
+[] Supervised with more prior information.
+
+## Acknowledgements
+
+Thanks to the following repos for their great work, which helps us a lot in the development of FDS:
+
+- [Pointrix](https://github.com/Pointrix-Project/Pointrix): A light weight framework for gaussian points rendering.
+- [DN Splatter](https://github.com/maturk/dn-splatter): The mesh exporter and mushroom dataloader.
+- [2d gaussian splatting](https://github.com/hbb1/2d-gaussian-splatting): Rendering Kernel.
+- [Sea Raft](https://github.com/princeton-vl/SEA-RAFT): Optical flow model of FDS.
+
+
+## Citation
 
 If you find this work is useful for your research, please cite our paper:
 ```

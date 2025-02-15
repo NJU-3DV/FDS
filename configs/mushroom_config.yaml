@@ -1,0 +1,102 @@
+name: "garden"
+
+trainer:
+  output_path: "/home/linzhuo/clz/log/garden"
+  max_steps: 30000
+  val_interval: 5000
+  training: True
+  enable_gui: False
+  model:
+    name: FDSGaussianModel
+    lambda_ssim: 0.2
+    flow_loss_weight: 0.026
+    flow_start_iter: 15000
+    normal_loss_weight: 0.1
+    raft_downsample_ratio: 0.5
+    point_cloud:
+      point_cloud_type: "TDGaussianPointCloud"  
+      max_sh_degree: 3
+      trainable: true
+      unwarp_prefix: "point_cloud"
+      initializer:
+        init_type: 'colmap'
+        feat_dim: 3
+    camera_model:
+      name: "FDS_camera"
+      enable_training: False
+      radius: 22.0
+    renderer:
+      name: "TDGSRender"
+      max_sh_degree: ${trainer.model.point_cloud.max_sh_degree}
+
+  gui:
+    name: BaseGUI
+    viewer_port: 8925
+  controller:
+    name: DensificationController
+    normalize_grad: False
+    min_opacity: 0.05
+    max_points: 5000000
+
+  optimizer:
+    optimizer_1:
+      type: BaseOptimizer
+      name: Adam
+      args:
+        eps: 1e-15
+      extra_cfg:
+        backward: False
+      params:
+        point_cloud.position:
+          lr: 0.00016
+        point_cloud.features:
+          lr: 0.0025
+        point_cloud.features_rest:
+          lr: 0.000125 # features/20
+        point_cloud.scaling:
+          lr: 0.005
+        point_cloud.rotation:
+          lr: 0.001
+        point_cloud.opacity:
+          lr: 0.05
+
+  scheduler:
+    name: "ExponLRScheduler"
+    params:
+      point_cloud.position:
+        init:  0.00016
+        final: 0.0000016
+        max_steps: ${trainer.max_steps}
+  datapipeline:
+    data_set: "MushRoomDataset"
+    shuffle: True
+    batch_size: 1
+    num_workers: 0
+    dataset:
+      data_path: "/home/linzhuo/gj/data/garden"
+      cached_observed_data: ${trainer.training}
+      scale: 1.0
+      white_bg: False
+      observed_data_dirs_dict: {"image": "image", "depth": "depth"}
+      depth_scale: 1000.
+
+  writer:
+    writer_type: "TensorboardWriter"
+  
+  hooks:
+    LogHook:
+      name: NormalLogHook
+    CheckPointHook:
+      name: CheckPointHook
+  
+  exporter:
+    exporter_a:
+      type: DepthMetricExporter
+    exporter_b:
+      type: DepthAndNormalMapsPoisson
+      extra_cfg:
+        voxel_size: 0.01
+        sdf_truc: 0.08
+        total_points: 20_000_000
+        gt_mesh_path: "/NASdata/clz/data/mushroom/vr_room"
+        cut: True
