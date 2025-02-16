@@ -77,6 +77,14 @@ git submodule update --init --recursive
 ```
 Please refer to https://github.com/pointrix-project/Pointrix for the install instruction.
 
+#### Install renderer kernel of 2dgs
+```
+git clone https://github.com/hbb1/diff-surfel-rasterization.git
+cd diff-surfel-rasterization
+python setup.py install
+pip install .
+```
+
 ### Running
 
 #### Mushroom dataset
