@@ -85,6 +85,11 @@ python setup.py install
 pip install .
 ```
 
+#### Pretrain optical flow weight
+
+Download pretrained optical flow weight: Tartan-C-T-TSKH432x960-M.pth in https://drive.google.com/drive/folders/1YLovlvUW94vciWvTyLf-p3uWscbOQRWW,
+and put it into your folder.
+
 ### Running
 
 #### Mushroom dataset
@@ -94,6 +99,7 @@ python launch.py --config configs/mushroom_config.yaml \
                   trainer.datapipeline.dataset.data_path=[your_data_path] \
                   trainer.output_path=[your_log_path] \
                   trainer.exporter.exporter_b.extra_cfg.gt_mesh_path=[your_mesh_path]  \
+                  trainer.model.raft_path=[your_raft_weight_path]
                   trainer.gui.viewer_port=8005
 ```
 
