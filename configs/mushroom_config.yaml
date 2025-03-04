@@ -93,7 +93,7 @@ trainer:
     exporter_a:
       type: DepthMetricExporter
     exporter_b:
-      type: DepthAndNormalMapsPoisson
+      type: TDGSMeshExporter
       extra_cfg:
         voxel_size: 0.01
         sdf_truc: 0.08

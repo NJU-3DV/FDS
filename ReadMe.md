@@ -35,6 +35,8 @@
 
 This is official implement of our ICLR 2025 paper: **Flow Distillation Sampling: Regularizing 3D Gaussians with Pre-trained Matching Priors**.
 
+## Update
+- 2025-03-04: Change the default mesh extraction method.
 
 ## 📝 Abstract
 
@@ -68,6 +70,7 @@ FDS
 #### Clone FDS
 ```bash
 git clone https://github.com/NJU-3DV/FDS.git --recursive
+pip install -r requirements.txt
 ```
 
 #### Install Pointrix
@@ -80,9 +83,7 @@ Please refer to https://github.com/pointrix-project/Pointrix for the install ins
 #### Install renderer kernel of 2dgs
 ```
 git clone https://github.com/hbb1/diff-surfel-rasterization.git
-cd diff-surfel-rasterization
-python setup.py install
-pip install .
+pip install diff-surfel-rasterization
 ```
 
 #### Pretrain optical flow weight

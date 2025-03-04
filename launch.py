@@ -11,7 +11,7 @@ from pointrix.logger.writer import logproject, Logger
 from model import FDS_camera, FDSGaussianModel
 from hook import NormalLogHook
 from dataset import MushRoomDataset
-from exporter import DepthMetricExporter
+from exporter import DepthMetricExporter, TDGSMeshExporter
 
 def main(args, extras) -> None:
     warnings.filterwarnings("ignore")
